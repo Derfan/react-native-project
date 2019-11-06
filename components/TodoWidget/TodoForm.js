@@ -45,6 +45,7 @@ const TodoForm = ({ addGoal, visible, cancelHandler }) => {
               <Button
                 title="ADD"
                 onPress={submitHandler}
+                disabled={!inputValue}
               />
             </View>
           </View>
