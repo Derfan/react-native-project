@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, View, Platform } from 'react-native';
+import { Button, View } from 'react-native';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
@@ -20,7 +20,7 @@ const TodoWidget = () => {
   const removeGoal = uid => setGoalList(currentGoals => currentGoals.filter(goal => goal.uid !== uid));
 
   return (
-    <View style={styles.screen}>
+    <View>
       <Button
         title="Add New Goal"
         onPress={() => setModalVisibility(true)}
@@ -43,12 +43,8 @@ const TodoWidget = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  screen: {
-    ...Platform.select({
-      android: { paddingTop: 40 },
-    }),
-  },
-});
+TodoWidget.navigationOptions = {
+  title: 'TodoWidget'
+};
 
 export default TodoWidget;
