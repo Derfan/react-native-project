@@ -8,6 +8,8 @@ const TodoWidget = () => {
   const [modalVisibility, setModalVisibility] = useState(false);
 
   const addGoal = title => {
+    if (!title) return;
+
     setGoalList(currentGoals => [
       ...currentGoals,
       { uid: Date.now().toString(), title }
