@@ -2,10 +2,12 @@ import React from 'react';
 import { SafeAreaView } from 'react-native';
 import TodoWidget from './components/TodoWidget';
 
-export default function App() {
+const App = () => {
   return (
     <SafeAreaView>
       <TodoWidget />
     </SafeAreaView>
   );
-}
+};
+
+export default App;
