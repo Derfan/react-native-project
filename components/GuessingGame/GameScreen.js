@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Button, Text, View, StyleSheet } from "react-native";
+import React, { useState, Fragment } from "react";
+import { Button, Text, View, StyleSheet, Alert } from "react-native";
 
 const generateRandomNumber = ({ min, max }) => Math.floor(Math.random() * (max - min + 1) + min);
 
-const defaultRange = { min: 0, max: 10 };
+const defaultRange = { min: 0, max: 100 };
 const defaultNumber = generateRandomNumber(defaultRange);
 
 const GameScreen = ({ customerNumber, addAttempt, setCurrentScreen }) => {
@@ -12,17 +12,17 @@ const GameScreen = ({ customerNumber, addAttempt, setCurrentScreen }) => {
 
   const computerGuessed = customerNumber === computerNumber;
 
-  const clickHandler = type => {
+  const clickHandler = (type) => {
     let newMaxValue = max;
     let newMinValue = min;
 
-    if (type === 'lower') {
-      newMaxValue = computerNumber - 1;
+    if ((type === 'lower' && customerNumber > computerNumber) || (type === 'greater' && customerNumber < computerNumber)) {
+      return Alert.alert('Dont\'t lie', 'Computer know everything');
     }
 
-    if (type === 'greater') {
-      newMinValue = computerNumber + 1;
-    }
+    if (type === 'lower') newMaxValue = computerNumber - 1;
+
+    if (type === 'greater') newMinValue = computerNumber + 1;
 
     const newValues = { max: newMaxValue, min: newMinValue };
     const newNumber = generateRandomNumber(newValues);
@@ -38,12 +38,16 @@ const GameScreen = ({ customerNumber, addAttempt, setCurrentScreen }) => {
   };
 
   return (
-    <View>
-      <Text>Computer think that your number is {computerNumber}</Text>
+    <Fragment>
+      <Text style={styles.message}>Computer think that your number is:</Text>
+
+      <Text style={styles.messageBold}>{computerNumber}</Text>
 
       {
         !computerGuessed &&
         <View style={styles.buttonContainer}>
+          <Text>My number is: </Text>
+
           <Button
             title="Lower"
             onPress={() => clickHandler('lower')}
@@ -63,14 +67,26 @@ const GameScreen = ({ customerNumber, addAttempt, setCurrentScreen }) => {
           onPress={finishGame}
         />
       }
-    </View>
+    </Fragment>
   );
 };
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  message: {
+    fontSize: 20,
+  },
+  messageBold: {
+    marginTop: 10,
+    padding: 10,
+    borderWidth: 2,
+    textAlign: 'center',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
 });
 
 export default GameScreen;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Button, View } from 'react-native';
-import TodoForm from './TodoForm';
-import TodoList from './TodoList';
+import { Button, View, StyleSheet } from 'react-native';
+import TodoForm from '../components/TodoWidget/TodoForm';
+import TodoList from '../components/TodoWidget/TodoList';
 
 const TodoWidget = () => {
   const [goalList, setGoalList] = useState([]);
@@ -20,9 +20,9 @@ const TodoWidget = () => {
   const removeGoal = uid => setGoalList(currentGoals => currentGoals.filter(goal => goal.uid !== uid));
 
   return (
-    <View>
+    <View style={styles.screen}>
       <Button
-        title="Add New Goal"
+        title="+ Add New Goal"
         onPress={() => setModalVisibility(true)}
       />
 
@@ -32,13 +32,10 @@ const TodoWidget = () => {
         cancelHandler={() => setModalVisibility(false)}
       />
 
-      {
-        Boolean(goalList.length) &&
-        <TodoList
-          data={goalList}
-          removeGoal={removeGoal}
-        />
-      }
+      <TodoList
+        data={goalList}
+        removeGoal={removeGoal}
+      />
     </View>
   );
 };
@@ -46,5 +43,12 @@ const TodoWidget = () => {
 TodoWidget.navigationOptions = {
   title: 'TodoWidget'
 };
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    paddingTop: 30,
+  },
+});
 
 export default TodoWidget;
