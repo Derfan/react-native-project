@@ -1,12 +1,13 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import { Button, Text, View, StyleSheet, Alert } from "react-native";
+import Card from "../common/Card";
 
 const generateRandomNumber = ({ min, max }) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const defaultRange = { min: 0, max: 100 };
 const defaultNumber = generateRandomNumber(defaultRange);
 
-const GameScreen = ({ customerNumber, addAttempt, setCurrentScreen }) => {
+const GameScreen = ({ customerNumber, addAttempt, onFinishGame }) => {
   const [{ min, max }, setRange] = useState(defaultRange);
   const [computerNumber, setComputerNumber] = useState(defaultNumber);
 
@@ -34,11 +35,11 @@ const GameScreen = ({ customerNumber, addAttempt, setCurrentScreen }) => {
 
   const finishGame = () => {
     setComputerNumber(0);
-    setCurrentScreen('gameOver');
+    onFinishGame();
   };
 
   return (
-    <Fragment>
+    <Card>
       <Text style={styles.message}>Computer think that your number is:</Text>
 
       <Text style={styles.messageBold}>{computerNumber}</Text>
@@ -67,7 +68,7 @@ const GameScreen = ({ customerNumber, addAttempt, setCurrentScreen }) => {
           onPress={finishGame}
         />
       }
-    </Fragment>
+    </Card>
   );
 };
 

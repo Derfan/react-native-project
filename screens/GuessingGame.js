@@ -10,16 +10,17 @@ const GuessingGame = () => {
   const [currentScreen, setCurrentScreen] = useState('start');
   const [numberOfAttempts, setNumberOfAttempts] = useState(0);
 
-  const getTitle = () => {
-    if (currentScreen === 'start') return 'Pick a Number';
-    if (currentScreen === 'game') return `The computer used ${numberOfAttempts} attempts`;
-    if (currentScreen === 'gameOver') return 'Congratulations!';
-
-    return '';
+  const titles = {
+    start: 'Pick a Number',
+    game: `The computer used ${numberOfAttempts} attempts`,
+    gameOver: 'Congratulations!',
   };
-  const headerTitle = getTitle();
 
   const addAttempt = () => setNumberOfAttempts(numberOfAttempts + 1);
+
+  const startGame = () => setCurrentScreen('game');
+
+  const finishGame = () => setCurrentScreen('gameOver');
 
   const restartGame = () => {
     setCustomerNumber('');
@@ -29,7 +30,7 @@ const GuessingGame = () => {
 
   return (
     <View style={styles.screen}>
-      <Header title={headerTitle} />
+      <Header>{titles[currentScreen]}</Header>
 
       <View style={styles.content}>
         {
@@ -37,7 +38,7 @@ const GuessingGame = () => {
           <StartScreen
             customerNumber={customerNumber}
             setCustomerNumber={setCustomerNumber}
-            setCurrentScreen={setCurrentScreen}
+            onStartGame={startGame}
           />
         }
 
@@ -46,7 +47,7 @@ const GuessingGame = () => {
           <GameScreen
             customerNumber={customerNumber}
             addAttempt={addAttempt}
-            setCurrentScreen={setCurrentScreen}
+            onFinishGame={finishGame}
           />
         }
 

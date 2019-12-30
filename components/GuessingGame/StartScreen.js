@@ -1,69 +1,74 @@
-import React, { Fragment, useState } from "react";
-import { View, Button, TextInput, StyleSheet, Text } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, Button, TextInput, StyleSheet, Text, Keyboard } from "react-native";
 import Card from '../common/Card';
 
-const StartScreen = ({ customerNumber, setCustomerNumber, setCurrentScreen }) => {
+const StartScreen = ({ customerNumber, setCustomerNumber, onStartGame }) => {
   const [inputValue, setInputValue] = useState('');
 
+  const numberInput = useRef();
+
   const inputHandler = value => setInputValue(value.replace(/[^0-9]/g, ''));
+
+  const cancelChoice = () => {
+    setInputValue('');
+    setCustomerNumber('');
+    numberInput.current.focus();
+  };
+
+  const selectNumber = () => {
+    setCustomerNumber(Number(inputValue));
+    Keyboard.dismiss();
+  };
+
   const startGame = () => {
     setInputValue('');
-    setCurrentScreen('game');
+    onStartGame();
   };
 
   return (
-    <Card>
+    <>
+      <Card>
+        <TextInput
+          ref={numberInput}
+          style={styles.input}
+          placeholder="Guess the number"
+          value={inputValue}
+          onChangeText={inputHandler}
+          keyboardType="number-pad"
+        />
+
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Reset"
+            color="red"
+            onPress={cancelChoice}
+          />
+
+          <Button
+            title="Confirm"
+            disabled={!inputValue}
+            onPress={selectNumber}
+          />
+        </View>
+      </Card>
+
       {
-        Boolean(!customerNumber) ? (
-            <TextInput
-              style={styles.input}
-              placeholder="Guess the number"
-              value={inputValue}
-              onChangeText={inputHandler}
-              keyboardType="number-pad"
-            />
-        )
-        : (
+        Boolean(customerNumber) && (
+          <Card style={styles.choice}>
             <Text style={styles.message}>
               You guess <Text style={styles.messageBold}>{customerNumber}</Text>, let's start?
             </Text>
+
+            <View style={styles.buttonContainer}>
+              <Button
+                title="Start"
+                onPress={startGame}
+              />
+            </View>
+          </Card>
         )
       }
-
-      <View style={styles.buttonContainer}>
-        {
-          !customerNumber ? (
-              <Fragment>
-                <Button
-                  title="Reset"
-                  color="red"
-                  onPress={() => setInputValue('')}
-                />
-
-                <Button
-                  title="Confirm"
-                  disabled={!inputValue}
-                  onPress={() => setCustomerNumber(Number(inputValue))}
-                />
-              </Fragment>
-            )
-            : (
-              <Fragment>
-                <Button
-                  title="Cancel"
-                  color="red"
-                  onPress={() => setCustomerNumber('')}
-                />
-
-                <Button
-                  title="Start"
-                  onPress={startGame}
-                />
-              </Fragment>
-            )
-        }
-      </View>
-    </Card>
+    </>
   );
 };
 
@@ -85,7 +90,10 @@ const styles= StyleSheet.create({
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-  }
+  },
+  choice: {
+    marginTop: 10,
+  },
 });
 
 export default StartScreen;
