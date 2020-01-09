@@ -16,7 +16,7 @@ const GuessingGame = () => {
     gameOver: 'Congratulations!',
   };
 
-  const addAttempt = () => setNumberOfAttempts(numberOfAttempts + 1);
+  const addAttempt = () => setNumberOfAttempts(number => number + 1);
 
   const startGame = () => setCurrentScreen('game');
 

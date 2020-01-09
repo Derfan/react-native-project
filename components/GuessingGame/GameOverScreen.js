@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
-import { Button, Text, Image, StyleSheet, View } from "react-native";
+import { Button, Image, StyleSheet, View } from "react-native";
+import CustomText from "../common/CustomText";
 import image from '../../assets/mountain-peak.png';
 
 const GameOverScreen = ({ numberOfAttempts, restartGame }) => {
   return (
     <Fragment>
-      <Text style={styles.title}>Game Over!</Text>
+      <CustomText style={styles.title}>Game Over!</CustomText>
 
       <View style={styles.pictureContainer}>
         <Image
@@ -14,9 +15,9 @@ const GameOverScreen = ({ numberOfAttempts, restartGame }) => {
         />
       </View>
 
-      <Text style={styles.message}>
-        Computer spent <Text style={styles.messageBold}>{numberOfAttempts}</Text> attempts to guess a number
-      </Text>
+      <CustomText style={styles.message}>
+        Computer spent <CustomText type="title" style={styles.messageBold}>{numberOfAttempts}</CustomText> attempts to guess a number
+      </CustomText>
 
       <Button
         title="Restart"
@@ -46,7 +47,6 @@ const styles = StyleSheet.create({
   },
   messageBold: {
     fontSize: 24,
-    fontWeight: 'bold',
   },
 });
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import CustomText from "../common/CustomText";
 
 const Header = ({ children }) => (
   <View style={styles.header}>
-    <Text style={styles.title}>{children}</Text>
+    <CustomText type="title" style={styles.title}>{children}</CustomText>
   </View>
 );
 

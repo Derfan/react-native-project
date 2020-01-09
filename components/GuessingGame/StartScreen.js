@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
-import { View, Button, TextInput, StyleSheet, Text, Keyboard } from "react-native";
+import { View, Button, TextInput, StyleSheet, Keyboard } from "react-native";
+import CustomText from '../common/CustomText';
 import Card from '../common/Card';
 
 const StartScreen = ({ customerNumber, setCustomerNumber, onStartGame }) => {
   const [inputValue, setInputValue] = useState('');
 
-  const numberInput = useRef();
+  const numberInput = useRef(null);
 
   const inputHandler = value => setInputValue(value.replace(/[^0-9]/g, ''));
 
@@ -55,9 +56,9 @@ const StartScreen = ({ customerNumber, setCustomerNumber, onStartGame }) => {
       {
         Boolean(customerNumber) && (
           <Card style={styles.choice}>
-            <Text style={styles.message}>
-              You guess <Text style={styles.messageBold}>{customerNumber}</Text>, let's start?
-            </Text>
+            <CustomText style={styles.message}>
+              You guess <CustomText type="title" style={styles.messageBold}>{customerNumber}</CustomText>, let's start?
+            </CustomText>
 
             <View style={styles.buttonContainer}>
               <Button
@@ -84,7 +85,6 @@ const styles= StyleSheet.create({
   },
   messageBold: {
     fontSize: 24,
-    fontWeight: 'bold',
   },
   buttonContainer: {
     marginTop: 10,

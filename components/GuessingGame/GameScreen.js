@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Text, View, StyleSheet, Alert } from "react-native";
+import { Button, View, StyleSheet, Alert } from "react-native";
+import CustomText from "../common/CustomText";
 import Card from "../common/Card";
 
 const generateRandomNumber = ({ min, max }) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -17,8 +18,17 @@ const GameScreen = ({ customerNumber, addAttempt, onFinishGame }) => {
     let newMaxValue = max;
     let newMinValue = min;
 
-    if ((type === 'lower' && customerNumber > computerNumber) || (type === 'greater' && customerNumber < computerNumber)) {
-      return Alert.alert('Dont\'t lie', 'Computer know everything');
+    if (
+      (type === 'lower' && customerNumber > computerNumber) ||
+      (type === 'greater' && customerNumber < computerNumber)
+    ) {
+      return Alert.alert(
+        'Dont\'t lie',
+        'Computer know everything',
+        [
+          { text: 'Sorry!', style: 'cancel' },
+        ],
+      );
     }
 
     if (type === 'lower') newMaxValue = computerNumber - 1;
@@ -40,14 +50,14 @@ const GameScreen = ({ customerNumber, addAttempt, onFinishGame }) => {
 
   return (
     <Card>
-      <Text style={styles.message}>Computer think that your number is:</Text>
+      <CustomText style={styles.message}>Computer think that your number is:</CustomText>
 
-      <Text style={styles.messageBold}>{computerNumber}</Text>
+      <CustomText type="title" style={styles.messageBold}>{computerNumber}</CustomText>
 
       {
         !computerGuessed &&
         <View style={styles.buttonContainer}>
-          <Text>My number is: </Text>
+          <CustomText>My number is: </CustomText>
 
           <Button
             title="Lower"
@@ -86,7 +96,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     textAlign: 'center',
     fontSize: 24,
-    fontWeight: 'bold',
   },
 });
 
