@@ -9,6 +9,7 @@ const GuessingGame = () => {
   const [customerNumber, setCustomerNumber] = useState('');
   const [currentScreen, setCurrentScreen] = useState('start');
   const [numberOfAttempts, setNumberOfAttempts] = useState(0);
+  const [numberOfCheat, setNumberOfCheat] = useState(0);
 
   const titles = {
     start: 'Pick a Number',
@@ -17,6 +18,8 @@ const GuessingGame = () => {
   };
 
   const addAttempt = () => setNumberOfAttempts(number => number + 1);
+
+  const addCheat = () => setNumberOfCheat(number => number + 1);
 
   const startGame = () => setCurrentScreen('game');
 
@@ -47,6 +50,7 @@ const GuessingGame = () => {
           <GameScreen
             customerNumber={customerNumber}
             addAttempt={addAttempt}
+            addCheat={addCheat}
             onFinishGame={finishGame}
           />
         }
@@ -54,7 +58,9 @@ const GuessingGame = () => {
         {
           currentScreen === 'gameOver' &&
           <GameOverScreen
+            customerNumber={customerNumber}
             numberOfAttempts={numberOfAttempts}
+            numberOfCheat={numberOfCheat}
             restartGame={restartGame}
           />
         }

@@ -1,23 +1,34 @@
 import React, { Fragment } from "react";
 import { Button, Image, StyleSheet, View } from "react-native";
 import CustomText from "../common/CustomText";
-import image from '../../assets/mountain-peak.png';
 
-const GameOverScreen = ({ numberOfAttempts, restartGame }) => {
+const Number = ({ value }) => <CustomText type="title" style={styles.messageBold}>{value}</CustomText>;
+
+const GameOverScreen = ({ numberOfAttempts, numberOfCheat, restartGame, customerNumber }) => {
   return (
     <Fragment>
-      <CustomText style={styles.title}>Game Over!</CustomText>
-
       <View style={styles.pictureContainer}>
         <Image
-          source={image}
-          style={styles.picture}
+          fadeDuration={200}
+          source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Gold_Cup_icon.svg/1170px-Gold_Cup_icon.svg.png' }}
+          style={styles.icon}
+          resizeMode="contain"
         />
       </View>
 
       <CustomText style={styles.message}>
-        Computer spent <CustomText type="title" style={styles.messageBold}>{numberOfAttempts}</CustomText> attempts to guess a number
+        Computer spent <Number value={numberOfAttempts} />&nbsp;
+        attempts to guess a number <Number value={customerNumber} />,&nbsp;
+        you trying to cheat for <Number value={numberOfCheat} /> times.
       </CustomText>
+
+      <View style={styles.pictureContainer}>
+        <Image
+          source={require('../../assets/success.png')}
+          style={styles.picture}
+          resizeMode="contain"
+        />
+      </View>
 
       <Button
         title="Restart"
@@ -34,13 +45,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 10,
   },
-  picture: {
-    width: 250,
-    height: 250,
+  icon: {
+    width: 50,
+    height: 50,
   },
-  title: {
-    fontSize: 22,
-    textAlign: 'center',
+  picture: {
+    width: '80%',
+    height: 300,
+    borderRadius: 100,
   },
   message: {
     fontSize: 20,

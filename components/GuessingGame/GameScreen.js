@@ -8,7 +8,7 @@ const generateRandomNumber = ({ min, max }) => Math.floor(Math.random() * (max -
 const defaultRange = { min: 0, max: 100 };
 const defaultNumber = generateRandomNumber(defaultRange);
 
-const GameScreen = ({ customerNumber, addAttempt, onFinishGame }) => {
+const GameScreen = ({ customerNumber, addAttempt, addCheat, onFinishGame }) => {
   const [{ min, max }, setRange] = useState(defaultRange);
   const [computerNumber, setComputerNumber] = useState(defaultNumber);
 
@@ -26,7 +26,7 @@ const GameScreen = ({ customerNumber, addAttempt, onFinishGame }) => {
         'Dont\'t lie',
         'Computer know everything',
         [
-          { text: 'Sorry!', style: 'cancel' },
+          { text: 'Sorry!', style: 'cancel', onPress: addCheat },
         ],
       );
     }
