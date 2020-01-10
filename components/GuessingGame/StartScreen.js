@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { View, Button, TextInput, StyleSheet, Keyboard } from "react-native";
 import CustomText from '../common/CustomText';
 import Card from '../common/Card';
+import MainButton from "../common/MainButton";
 
 const StartScreen = ({ customerNumber, setCustomerNumber, onStartGame }) => {
   const [inputValue, setInputValue] = useState('');
@@ -61,9 +62,10 @@ const StartScreen = ({ customerNumber, setCustomerNumber, onStartGame }) => {
             </CustomText>
 
             <View style={styles.buttonContainer}>
-              <Button
+              <MainButton
                 title="Start"
                 onPress={startGame}
+                iconName="rocket"
               />
             </View>
           </Card>

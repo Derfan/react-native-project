@@ -6,18 +6,18 @@ import GameScreen from "../components/GuessingGame/GameScreen";
 import GameOverScreen from "../components/GuessingGame/GameOverScreen";
 
 const GuessingGame = () => {
-  const [customerNumber, setCustomerNumber] = useState('');
   const [currentScreen, setCurrentScreen] = useState('start');
-  const [numberOfAttempts, setNumberOfAttempts] = useState(0);
+  const [customerNumber, setCustomerNumber] = useState('');
   const [numberOfCheat, setNumberOfCheat] = useState(0);
+  const [pastGuesses, setPastGuesses] = useState([]);
 
   const titles = {
     start: 'Pick a Number',
-    game: `The computer used ${numberOfAttempts} attempts`,
+    game: `The computer used ${pastGuesses.length} attempts`,
     gameOver: 'Congratulations!',
   };
 
-  const addAttempt = () => setNumberOfAttempts(number => number + 1);
+  const addAttempt = pastNumber => setPastGuesses(arr => [pastNumber, ...arr]);
 
   const addCheat = () => setNumberOfCheat(number => number + 1);
 
@@ -27,8 +27,9 @@ const GuessingGame = () => {
 
   const restartGame = () => {
     setCustomerNumber('');
-    setNumberOfAttempts(0);
+    setNumberOfCheat(0);
     setCurrentScreen('start');
+    setPastGuesses([]);
   };
 
   return (
@@ -49,6 +50,7 @@ const GuessingGame = () => {
           currentScreen === 'game' &&
           <GameScreen
             customerNumber={customerNumber}
+            pastGuesses={pastGuesses}
             addAttempt={addAttempt}
             addCheat={addCheat}
             onFinishGame={finishGame}
@@ -59,7 +61,7 @@ const GuessingGame = () => {
           currentScreen === 'gameOver' &&
           <GameOverScreen
             customerNumber={customerNumber}
-            numberOfAttempts={numberOfAttempts}
+            numberOfAttempts={pastGuesses.length}
             numberOfCheat={numberOfCheat}
             restartGame={restartGame}
           />

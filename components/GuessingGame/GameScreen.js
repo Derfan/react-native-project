@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, View, StyleSheet, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
+import { Button, View, StyleSheet, Alert, FlatList } from "react-native";
 import CustomText from "../common/CustomText";
 import Card from "../common/Card";
 
@@ -8,9 +8,19 @@ const generateRandomNumber = ({ min, max }) => Math.floor(Math.random() * (max -
 const defaultRange = { min: 0, max: 100 };
 const defaultNumber = generateRandomNumber(defaultRange);
 
-const GameScreen = ({ customerNumber, addAttempt, addCheat, onFinishGame }) => {
+const Item = ({ children }) => (
+  <View style={styles.listItem}>
+    <CustomText># {children}</CustomText>
+  </View>
+);
+
+const GameScreen = ({ customerNumber, addAttempt, addCheat, onFinishGame, pastGuesses }) => {
   const [{ min, max }, setRange] = useState(defaultRange);
   const [computerNumber, setComputerNumber] = useState(defaultNumber);
+
+  useEffect(() => {
+    addAttempt(computerNumber);
+  }, []);
 
   const computerGuessed = customerNumber === computerNumber;
 
@@ -38,7 +48,7 @@ const GameScreen = ({ customerNumber, addAttempt, addCheat, onFinishGame }) => {
     const newValues = { max: newMaxValue, min: newMinValue };
     const newNumber = generateRandomNumber(newValues);
 
-    addAttempt();
+    addAttempt(newNumber);
     setRange(newValues);
     setComputerNumber(newNumber);
   };
@@ -49,36 +59,52 @@ const GameScreen = ({ customerNumber, addAttempt, addCheat, onFinishGame }) => {
   };
 
   return (
-    <Card>
-      <CustomText style={styles.message}>Computer think that your number is:</CustomText>
+    <>
+      <Card>
+        <CustomText style={styles.message}>Computer think that your number is:</CustomText>
 
-      <CustomText type="title" style={styles.messageBold}>{computerNumber}</CustomText>
+        <CustomText type="title" style={styles.messageBold}>{computerNumber}</CustomText>
+
+        {
+          !computerGuessed &&
+          <View style={styles.buttonContainer}>
+            <CustomText>My number is: </CustomText>
+
+            <Button
+              title="Lower"
+              onPress={() => clickHandler('lower')}
+            />
+
+            <Button
+              title="Greater"
+              onPress={() => clickHandler('greater')}
+            />
+          </View>
+        }
+
+        {
+          computerGuessed &&
+          <Button
+            title="Game Over!"
+            onPress={finishGame}
+          />
+        }
+      </Card>
 
       {
-        !computerGuessed &&
-        <View style={styles.buttonContainer}>
-          <CustomText>My number is: </CustomText>
+        Boolean(pastGuesses.length > 1) && (
+          <>
+            <CustomText type="title" style={styles.title}>Past guesses:</CustomText>
 
-          <Button
-            title="Lower"
-            onPress={() => clickHandler('lower')}
-          />
-
-          <Button
-            title="Greater"
-            onPress={() => clickHandler('greater')}
-          />
-        </View>
+            <FlatList
+              data={pastGuesses.filter((_, index) => index !== 0)}
+              renderItem={({ item }) => <Item>{item}</Item>}
+              keyExtractor={item => String(item)}
+            />
+          </>
+        )
       }
-
-      {
-        computerGuessed &&
-        <Button
-          title="Game Over!"
-          onPress={finishGame}
-        />
-      }
-    </Card>
+    </>
   );
 };
 
@@ -96,6 +122,16 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     textAlign: 'center',
     fontSize: 24,
+  },
+  title: {
+    fontSize: 16,
+    marginTop: 15,
+  },
+  listItem: {
+    borderColor: '#ccc',
+    borderWidth: 1,
+    padding: 10,
+    marginVertical: 10,
   },
 });
 

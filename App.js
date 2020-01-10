@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
+import { AppLoading } from 'expo';
+import * as Font from 'expo-font';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { Link, NativeRouter, Route } from "react-router-native";
-import * as Font from 'expo-font';
-import { AppLoading } from 'expo';
 import CustomText from "./components/common/CustomText";
 import screens from './screens';
 
-const fetchFonts = () => {
-  return Font.loadAsync({
-    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-  });
-};
+const fetchFonts = () => Font.loadAsync({
+  'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+  'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+});
 
 const App = () => {
   const [dataLoaded, setDataLoaded] = useState(false);

@@ -1,58 +1,67 @@
-import React, { Fragment } from "react";
-import { Button, Image, StyleSheet, View } from "react-native";
+import React from "react";
+import { Image, StyleSheet, View, ScrollView, FlatList } from "react-native";
 import CustomText from "../common/CustomText";
+import MainButton from "../common/MainButton";
 
 const Number = ({ value }) => <CustomText type="title" style={styles.messageBold}>{value}</CustomText>;
 
-const GameOverScreen = ({ numberOfAttempts, numberOfCheat, restartGame, customerNumber }) => {
-  return (
-    <Fragment>
-      <View style={styles.pictureContainer}>
-        <Image
-          fadeDuration={200}
-          source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Gold_Cup_icon.svg/1170px-Gold_Cup_icon.svg.png' }}
-          style={styles.icon}
-          resizeMode="contain"
-        />
-      </View>
-
-      <CustomText style={styles.message}>
-        Computer spent <Number value={numberOfAttempts} />&nbsp;
-        attempts to guess a number <Number value={customerNumber} />,&nbsp;
-        you trying to cheat for <Number value={numberOfCheat} /> times.
-      </CustomText>
-
-      <View style={styles.pictureContainer}>
-        <Image
-          source={require('../../assets/success.png')}
-          style={styles.picture}
-          resizeMode="contain"
-        />
-      </View>
-
-      <Button
-        title="Restart"
-        onPress={restartGame}
+const GameOverScreen = ({ numberOfAttempts, numberOfCheat, restartGame, customerNumber, pastGuesses }) => (
+  <ScrollView>
+    <View style={styles.pictureContainer}>
+      <Image
+        fadeDuration={200}
+        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Gold_Cup_icon.svg/1170px-Gold_Cup_icon.svg.png' }}
+        style={styles.icon}
+        resizeMode="contain"
       />
-    </Fragment>
-  );
-};
+    </View>
+
+    <MainButton
+      title="Restart"
+      onPress={restartGame}
+      iconName="refresh"
+    />
+
+    <CustomText type="title" style={styles.title}>Game statistics:</CustomText>
+
+    <View style={styles.pictureContainer}>
+      <Image
+        source={require('../../assets/success.png')}
+        style={styles.picture}
+      />
+    </View>
+
+    <View>
+      <CustomText style={styles.message}><Number value={customerNumber} /> - Guessed number</CustomText>
+    </View>
+
+    <View>
+      <CustomText style={styles.message}><Number value={numberOfAttempts} /> - Number of computer attempts</CustomText>
+    </View>
+
+    <View>
+      <CustomText style={styles.message}><Number value={numberOfCheat} /> - Number of your cheat</CustomText>
+    </View>
+  </ScrollView>
+);
 
 const styles = StyleSheet.create({
+  title: {
+    marginTop: 35,
+    fontSize: 20,
+  },
   pictureContainer: {
-    padding: 10,
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
   },
   icon: {
-    width: 50,
-    height: 50,
+    width: 150,
+    height: 150,
   },
   picture: {
-    width: '80%',
-    height: 300,
-    borderRadius: 100,
+    width: '100%',
+    height: 150,
   },
   message: {
     fontSize: 20,
