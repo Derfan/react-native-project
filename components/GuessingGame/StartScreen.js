@@ -1,10 +1,13 @@
 import React, { useState, useRef } from "react";
-import { View, Button, TextInput, StyleSheet, Keyboard } from "react-native";
+import { View, Button, TextInput, StyleSheet, Keyboard, Dimensions } from "react-native";
 import CustomText from '../common/CustomText';
 import Card from '../common/Card';
 import MainButton from "../common/MainButton";
+import useDimensions from "../common/useDimensions";
 
 const StartScreen = ({ customerNumber, setCustomerNumber, onStartGame }) => {
+  const window = useDimensions();
+
   const [inputValue, setInputValue] = useState('');
 
   const numberInput = useRef(null);
@@ -39,7 +42,7 @@ const StartScreen = ({ customerNumber, setCustomerNumber, onStartGame }) => {
           keyboardType="number-pad"
         />
 
-        <View style={styles.buttonContainer}>
+        <View style={window.width > 380 ? styles.buttonContainer : styles.buttonContainerSmall}>
           <Button
             title="Reset"
             color="red"
@@ -89,10 +92,11 @@ const styles= StyleSheet.create({
     fontSize: 24,
   },
   buttonContainer: {
-    marginTop: 10,
+    marginTop: Dimensions.get('window').width * 0.07,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
+  buttonContainerSmall: {},
   choice: {
     marginTop: 10,
   },
